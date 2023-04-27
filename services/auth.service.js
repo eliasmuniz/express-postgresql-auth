@@ -16,7 +16,7 @@ class AuthService {
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      throw boom.unauthorized();;
+      throw boom.unauthorized();
     }
     delete user.dataValues.password;
     return user;
@@ -40,6 +40,9 @@ class AuthService {
       throw boom.unauthorized();
     }
     const payload = { sub: user.id };
+
+    // con este token enviamos el id del user, el jwtsecret y una expiración
+    // de esa forma accediendo al link podríamos chequear el token y
     const token = jwt.sign(payload, config.jwtSecret, {expiresIn: '15min'});
     const link = `http://myfrontend.com/recovery?token=${token}`;
     await service.update(user.id, {recoveryToken: token});

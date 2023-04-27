@@ -11,6 +11,7 @@ router.get('/my-orders',
   async (req, res, next) => {
     try {
       const user = req.user;
+      // el id del usuario está en sub
       const orders = await service.findByUser(user.sub);
       res.json(orders);
     } catch (error) {
